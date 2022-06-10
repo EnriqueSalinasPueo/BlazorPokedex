@@ -15,7 +15,7 @@ namespace BlazorPokedex.Services
         }
         public async Task<IEnumerable<Pokemon>> GetAllPokemons()
         {
-            var pokemonList = JsonConvert.DeserializeObject<ResultObject>(await _httpClient.GetStringAsync($"pokemon?offset=0&limit=20"));
+            var pokemonList = JsonConvert.DeserializeObject<ResultObject>(await _httpClient.GetStringAsync($"pokemon?offset=0&limit=24"));
 
             var resutlList = new List<Pokemon>();
 
