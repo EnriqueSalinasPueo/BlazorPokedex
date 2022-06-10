@@ -1,4 +1,5 @@
 ﻿using BlazorPokedex.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -18,9 +19,9 @@ namespace BlazorPokedex.Services
             throw new NotImplementedException();
         }
 
-        public Task<Pokemon> GetPokemon()
+        public async Task<Pokemon> GetPokemon(string name)
         {
-            throw new NotImplementedException();
+            return JsonConvert.DeserializeObject<Pokemon>(await _httpClient.GetStringAsync($"pokemon/{name}"));           
         }
     }
 }

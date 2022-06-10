@@ -1,12 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlazorPokedex.Models
 {
     public class Pokemon
     {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        [JsonProperty("type")]
+        public List<Type> Types { get; set; }
+        [JsonProperty("sprites")]
+        public List<Sprite> Sprites { get; set; }
     }
 }
