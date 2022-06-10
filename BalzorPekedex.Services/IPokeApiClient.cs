@@ -10,6 +10,6 @@ namespace BlazorPokedex.Services
     public interface IPokeApiClient
     {
         Task<IEnumerable<Pokemon>> GetAllPokemons();
-        Task<Pokemon> GetPokemon();
+        Task<Pokemon> GetPokemon(string name);
     }
 }
