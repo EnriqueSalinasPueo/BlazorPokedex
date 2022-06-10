@@ -7,7 +7,7 @@ namespace BlazorPokedex.Models
     {
         [JsonProperty("name")]
         public string Name { get; set; }
-        [JsonProperty("type")]
+        [JsonProperty("types")]
         public List<Type> Types { get; set; }
         [JsonProperty("sprites")]
         public Sprite Sprite { get; set; }
