@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BalzorPekedex.Services\BlazorPokedex.Services.csproj" />
+    <ProjectReference Include="..\BlazorPokedex.Models\BlazorPokedex.Models.csproj" />
   </ItemGroup>
 
 </Project>
