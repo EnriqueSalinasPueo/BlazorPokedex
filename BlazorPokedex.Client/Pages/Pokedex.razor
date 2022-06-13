@@ -1,18 +1,68 @@
 ﻿@page "/pokedex"
 
-@inject IPokeApiClient PokeApiClient 
+@inject IPokeApiClient PokeApiClient
 
 <h3>Pokedex</h3>
 
-<PokemonGrid Pokemons="Pokemons" NumberOfRows="5" />
+<div>
+
+    <div class="row">
+        <div class="col">
+            <Pagination Metadata="paginationMetadata" Spread="5" SelectedPages="SelectedPage" />
+        </div>
+    </div>
+
+    <PokemonGrid Pokemons="Pokemons" NumberOfRows="5" />
+</div>
+
 
 @code {
 
     public IEnumerable<Pokemon> Pokemons { get; set; }
 
+    PaginationMetadata paginationMetadata = new PaginationMetadata();
+
+    PaginationParameters paginationParameters = new PaginationParameters();
+
     protected override async Task OnInitializedAsync()
     {
-        Pokemons = await PokeApiClient.GetAllPokemons();
+        var result = await PokeApiClient.GetAllPokemons(paginationParameters);
+
+        var pokemons = new List<Pokemon>();
+
+        foreach (var poke in result.Pokemons)
+        {
+            pokemons.Add(await PokeApiClient.GetPokemon(poke.Name));
+        }
+
+        Pokemons = pokemons;
+
+        paginationMetadata.TotalCount = result.Count;
+        paginationMetadata.TotalPages = paginationMetadata.TotalCount / paginationParameters.PageSize;
+    }
+
+    private async Task SelectedPage(int page)
+    {
+        paginationParameters.PageNumber = page;
+
+        await GetPokemons();
+    }
+
+    private async Task GetPokemons()
+    {
+        var result = await PokeApiClient.GetAllPokemons(paginationParameters);
+
+        var pokemons = new List<Pokemon>();
+
+        foreach (var poke in result.Pokemons)
+        {
+            pokemons.Add(await PokeApiClient.GetPokemon(poke.Name));
+        }
+
+        Pokemons = pokemons;
+
+        paginationMetadata.TotalCount = result.Count;
+        paginationMetadata.TotalPages = paginationMetadata.TotalCount / paginationParameters.PageSize;
     }
 
 

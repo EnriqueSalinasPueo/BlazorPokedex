@@ -9,7 +9,7 @@ namespace BlazorPokedex.Services
 {
     public interface IPokeApiClient
     {
-        Task<IEnumerable<Pokemon>> GetAllPokemons();
+        Task<ResultObject> GetAllPokemons(PaginationParameters paginationParameters);
         Task<Pokemon> GetPokemon(string name);
     }
 }

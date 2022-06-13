@@ -1,0 +1,58 @@
+﻿
+<nav>
+    <ul class="pagination justify-content-center">
+        @foreach (var button in _paginationButtons)
+        {
+            <li @onclick="() => OnSelectedPage(button)" style="cursor:pointer" class="page-item
+                @(button.Enable ? null : "disable")
+                @(button.Active ? "active": null)">
+                <span class="page-link" href="#">@button.Text</span>
+            </li>
+        }
+    </ul>
+</nav>
+
+
+@code {
+    private List<PaginationButton> _paginationButtons;
+
+    [Parameter]
+    public PaginationMetadata Metadata { get; set; }
+
+    [Parameter]
+    public EventCallback<int> SelectedPages { get; set; }
+
+    [Parameter]
+    public int Spread { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        CreatePaginationButtons();
+    }
+
+    private void CreatePaginationButtons()
+    {
+        _paginationButtons = new List<PaginationButton>();
+        _paginationButtons.Add(new PaginationButton(Metadata.CurrentPage - 1, Metadata.HasPrevious, "Previus"));
+
+        for (int i = 0; i < Metadata.TotalPages; i++)
+        {
+            if (i >= Metadata.CurrentPage - Spread && i <= Metadata.CurrentPage + Spread)
+            {
+                _paginationButtons.Add(new PaginationButton(i, true, i.ToString()) { Active = Metadata.CurrentPage == i });
+            }
+        }
+
+        _paginationButtons.Add(new PaginationButton(Metadata.CurrentPage + 1, Metadata.HasNext, "Next"));
+    }
+
+    private async Task OnSelectedPage(PaginationButton button)
+    {
+        if (button.Page == Metadata.CurrentPage || !button.Enable)
+        {
+            return;
+        }
+        Metadata.CurrentPage = button.Page;
+        await SelectedPages.InvokeAsync(button.Page);
+    }
+}
