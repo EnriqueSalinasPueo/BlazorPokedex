@@ -1,0 +1,59 @@
+﻿@page "/pokemonDetails/{name}"
+
+@inject IPokeApiClient PokeApiClient
+
+<h3>PokemonDetails</h3>
+
+@if (Pokemon == null) {
+    <p><em>Loading...</em></p>    
+}
+else
+{
+    <div class="row row-align">
+        <div class="col-sm-6">
+            <div class="mt-2">
+                <h1>@Pokemon.Name.Substring(0,1).ToUpper()@Pokemon.Name.Substring(1,Pokemon.Name.Length -1)</h1>
+                @foreach (var poke in Pokemon.Types)
+                {
+                    <span class="badge border rounded-pill bg-@poke.PokemonType.Name" style="font-size:medium" >
+                        @poke.PokemonType.Name
+                    </span>
+                }
+            </div>
+
+            <ul class="list-group list-group-flush mt-4" style="width:20rem;">
+                <li class="list-group-item bg-transparent">
+                    Experiencia <b class="float-end">@Pokemon.Experiencie</b>
+                </li>
+                <li class="list-group-item bg-transparent">
+                    Altura <b class="float-end">@Pokemon.Weight</b>
+                </li>
+                <li class="list-group-item bg-transparent">
+                    Peso <b class="float-end">@Pokemon.Height</b>
+                </li>
+                <li class="list-group-item bg-transparent">
+                    Identificador <b class="float-end">@Pokemon.Id</b>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="col-sm-6">
+            <img scr="https://img.pokemondb.net/artwork/@(Pokemon.Name).jpg" alt="@Pokemon.Name"
+                 class="img-fluid d-block mx-auto" style="width:300px" />
+        </div>
+    </div>
+}
+
+@code {
+    // Blazor carga en la propiedad lo que le pasamos por parametro, siempre que reconozca que las variables son iguales
+    [Parameter]
+    public string name { get; set; }
+    public Pokemon Pokemon { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Pokemon = await PokeApiClient.GetPokemon(name);
+    }
+
+}

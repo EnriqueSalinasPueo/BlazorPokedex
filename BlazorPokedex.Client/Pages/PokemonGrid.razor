@@ -16,6 +16,11 @@ else
                             <h4 class="card-title">@poke.Name</h4>
                             <img src="@poke.Sprite.Front" class="img-fluid" alt="@poke.Name" />
                         </div>
+                        <div class="moreinfo">
+                            <span class="badge border rounded-pill bg-@(poke.Types.FirstOrDefault().PokemonType.Name)">
+                                <a href="/pokemonDetails/@poke.Name">Ver</a>
+                            </span>
+                        </div>
                     </div>
 
                 }
